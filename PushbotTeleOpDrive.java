@@ -88,27 +88,22 @@ public class PushbotTeleOpDrive extends OpMode{
         if(right < DEAD_ZONE && right > DEAD_ZONE_LOWER) {
             right = 0;
         }
+        leftMinusRight = left - right;
+        leftPlusRight = left + right;
 
-        if(left > DEAD_ZONE && right == 0) {
-            robot.leftMotor.setPower(left);
-            robot.rightMotor.setPower(left);
+        double leftMinusRightMagnitude = Math.abs(leftMinusRight);
+        double leftPlusRightMagnitude = Math.abs(leftPlusRight);
+        if(leftMinusRightMagnitude > 1) {
+            robot.leftMotor.setPower(leftMinusRight / leftMinusRightMagnitude);
+            robot.rightMotor.setPower(leftPlusRight / leftMinusRightMagnitude);
         }
-        else if(left < DEAD_ZONE_LOWER && right == 0) {
-            robot.leftMotor.setPower(left);
-            robot.rightMotor.setPower(left);
+        else if(leftPlusRightMagnitude > 1) {
+            robot.leftMotor.setPower(leftMinusRight / leftPlusRightMagnitude);
+            robot.rightMotor.setPower(leftPlusRight / leftPlusRightMagnitude);
         }
-        else if(right > DEAD_ZONE){
-            robot.leftMotor.setPower(right);
-            robot.rightMotor.setPower(-right);
-
-        }
-        else if(right < DEAD_ZONE_LOWER){
-            robot.leftMotor.setPower(right);
-            robot.rightMotor.setPower(-right);
-        }
-        else{
-            robot.leftMotor.setPower(0);
-            robot.rightMotor.setPower(0);
+        else {
+            robot.leftMotor.setPower(leftMinusRight);
+            robot.rightMotor.setPower(leftPlusRight);
         }
 
         telemetry.addData("left",  "%.2f", left);
