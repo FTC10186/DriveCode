@@ -78,7 +78,7 @@ public class PushbotTeleOpDrive extends OpMode{
 
         // Run wheels in tank mode (note: The joystick goes negative when pushed forwards, so negate it)
         left = -gamepad1.left_stick_y;
-        right = -gamepad1.right_stick_y;
+        right = -gamepad1.right_stick_x;
         /*robot.leftMotor.setPower(left);
         robot.rightMotor.setPower(right);*/
 
@@ -89,22 +89,26 @@ public class PushbotTeleOpDrive extends OpMode{
             right = 0;
         }
 
-        leftMinusRight = left - right;
-        leftPlusRight = left + right;
+        if(left > DEAD_ZONE && right == 0) {
+            robot.leftMotor.setPower(left);
+            robot.rightMotor.setPower(left);
+        }
+        else if(left < DEAD_ZONE_LOWER && right == 0) {
+            robot.leftMotor.setPower(left);
+            robot.rightMotor.setPower(left);
+        }
+        else if(right > DEAD_ZONE){
+            robot.leftMotor.setPower(right);
+            robot.rightMotor.setPower(-right);
 
-        double leftMinusRightMagnitude = Math.abs(leftMinusRight);
-        double leftPlusRightMagnitude = Math.abs(leftPlusRight);
-        if(leftMinusRightMagnitude > 1) {
-            robot.leftMotor.setPower(leftMinusRight / leftMinusRightMagnitude);
-            robot.rightMotor.setPower(leftPlusRight / leftMinusRightMagnitude);
         }
-        else if(leftPlusRightMagnitude > 1) {
-            robot.leftMotor.setPower(leftMinusRight / leftPlusRightMagnitude);
-            robot.rightMotor.setPower(leftPlusRight / leftPlusRightMagnitude);
+        else if(right < DEAD_ZONE_LOWER){
+            robot.leftMotor.setPower(right);
+            robot.rightMotor.setPower(-right);
         }
-        else {
-            robot.leftMotor.setPower(leftMinusRight);
-            robot.rightMotor.setPower(leftPlusRight);
+        else{
+            robot.leftMotor.setPower(0);
+            robot.rightMotor.setPower(0);
         }
 
         telemetry.addData("left",  "%.2f", left);
