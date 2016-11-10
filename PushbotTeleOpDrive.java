@@ -1,5 +1,3 @@
-//Copy of last year's code; doesn't work
-
 /*
 Copyright (c) 2016 Robert Atkinson
 
@@ -81,8 +79,8 @@ public class PushbotTeleOpDrive extends OpMode{
         // Run wheels in tank mode (note: The joystick goes negative when pushed forwards, so negate it)
         left = -gamepad1.left_stick_y;
         right = -gamepad1.right_stick_y;
-        robot.leftMotor.setPower(left);
-        robot.rightMotor.setPower(right);
+        /*robot.leftMotor.setPower(left);
+        robot.rightMotor.setPower(right);*/
 
         if(left < DEAD_ZONE && left > DEAD_ZONE_LOWER) {
             left = 0;
