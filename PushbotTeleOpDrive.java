@@ -88,8 +88,8 @@ public class PushbotTeleOpDrive extends OpMode{
         if(right < DEAD_ZONE && right > DEAD_ZONE_LOWER) {
             right = 0;
         }
-        leftMinusRight = left - right;
-        leftPlusRight = left + right;
+        leftMinusRight = left - (.9*right);
+        leftPlusRight = left + (.9*right);
 
         double leftMinusRightMagnitude = Math.abs(leftMinusRight);
         double leftPlusRightMagnitude = Math.abs(leftPlusRight);
